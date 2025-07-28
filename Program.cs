@@ -1,2 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using SlimeAdventure.Data;
+
+using var db = new GameDbContext();
+db.Database.EnsureCreated();
+
+var engine = new GameEngine(db);
+engine.Start();
