@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using SlimeAdventure.Data;
 using SlimeAdventure.Data.Models;
+using SlimeAdventure.Display;
 
 public class GameEngine
 {
@@ -45,7 +46,6 @@ public class GameEngine
             Console.Clear();
             Console.WriteLine($"== {room!.Name} ==");
             Console.WriteLine(room.Description);
-            Console.WriteLine("\nUse arrow keys to move. Press 'H' for help. Press 'Q' to quit.");
 
             var key = Console.ReadKey(intercept: true).Key;
             if (key == ConsoleKey.Q) break;
@@ -69,20 +69,36 @@ public class GameEngine
         switch (key)
         {
             case ConsoleKey.UpArrow:
-                if (room!.NorthRoomId.HasValue) MoveTo(room.NorthRoomId.Value);
-                else ShowBlocked();
+                if (room!.NorthRoomId.HasValue)
+                {
+                    AsciiArtEngine.ShowMovement(MovementDirection.Up);
+                    MoveTo(room.NorthRoomId.Value);
+                }
+                else AsciiArtEngine.ShowMovement(MovementDirection.BlockedUp);
                 break;
             case ConsoleKey.DownArrow:
-                if (room!.SouthRoomId.HasValue) MoveTo(room.SouthRoomId.Value);
-                else ShowBlocked();
+                if (room!.SouthRoomId.HasValue)
+                {
+                    AsciiArtEngine.ShowMovement(MovementDirection.Down);
+                    MoveTo(room.SouthRoomId.Value);
+                }
+                else AsciiArtEngine.ShowMovement(MovementDirection.BlockedDown);
                 break;
             case ConsoleKey.LeftArrow:
-                if (room!.WestRoomId.HasValue) MoveTo(room.WestRoomId.Value);
-                else ShowBlocked();
+                if (room!.WestRoomId.HasValue)
+                {
+                    AsciiArtEngine.ShowMovement(MovementDirection.Left);
+                    MoveTo(room.WestRoomId.Value);
+                }
+                else AsciiArtEngine.ShowMovement(MovementDirection.BlockedLeft);
                 break;
             case ConsoleKey.RightArrow:
-                if (room!.EastRoomId.HasValue) MoveTo(room.EastRoomId.Value);
-                else ShowBlocked();
+                if (room!.EastRoomId.HasValue)
+                {
+                    AsciiArtEngine.ShowMovement(MovementDirection.Right);
+                    MoveTo(room.EastRoomId.Value);
+                }
+                else AsciiArtEngine.ShowMovement(MovementDirection.BlockedRight);
                 break;
             case ConsoleKey.H:
                 ShowHelp();
@@ -92,13 +108,6 @@ public class GameEngine
                 Thread.Sleep(1000);
                 break;
         }
-    }
-
-
-    private void ShowBlocked()
-    {
-        Console.WriteLine("You squish in place. That way is blocked.");
-        Thread.Sleep(1000);
     }
 
     private void ShowHelp()
